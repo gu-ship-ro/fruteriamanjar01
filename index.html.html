@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manjar - Frutería y Postres Online</title>
+    <style>
+        /* Estilos Generales y Estructura */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            color: #4CAF50;
+            font-size: 3em;
+            margin: 0;
+        }
+
+        header p {
+            color: #777;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
+        /* Estilos del Formulario de Registro */
+        #registro-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .form-section {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        #btn-entrar {
+            width: 100%;
+            padding: 15px;
+            background-color: #FFA726;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #btn-entrar:hover {
+            background-color: #FB8C00;
+        }
+
+        /* Estilos del Menú de Productos */
+        #menu-page, #pedido-page {
+            display: none;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            justify-items: center;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-info h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #666;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .product-options {
+            margin-top: 10px;
+        }
+
+        .product-options select {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .add-to-cart {
+            width: 80%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #689F38;
+        }
+        
+        .checkout-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .checkout-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #ver-pedido {
+            background-color: #FFC107;
+            color: #333;
+        }
+
+        #ver-pedido:hover {
+            background-color: #FFB300;
+        }
+
+        #finalizar-pedido {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        #finalizar-pedido:hover {
+            background-color: #689F38;
+        }
+
+        /* Estilos de la Página de Pedido */
+        #pedido-page h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #pedido-list {
+            list-style: none;
+            padding: 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #pedido-list li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #pedido-list li:last-child {
+            border-bottom: none;
+        }
+
+        #total-pedido {
+            text-align: right;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .back-to-menu {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-to-menu:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="registro-page" class="container">
+        <header>
+            <img src="https://i.imgur.com/gK2e3p7.png" alt="Logo Manjar" class="logo-img">
+            <h1>Manjar 🍊🍎🍌</h1>
+            <p>¡Tu frutería y postres online de confianza!</p>
+        </header>
+        <div class="form-section">
+            <h2>Regístrate para entrar</h2>
+            <form id="formulario-registro">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo:</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    <input type="text" id="direccion" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <button type="submit" id="btn-entrar">Entrar a la tienda</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="menu-page" class="container">
+        <header>
+            <img src="https://i.imgur.com/gK2e3p7.png" alt="Logo Manjar" class="logo-img">
+            <h1>Nuestro Menú Delicioso</h1>
+            <p>Elige tus favoritos y disfruta de la frescura de Manjar.</p>
+        </header>
+        <div class="product-grid">
+            </div>
+        <div class="checkout-buttons">
+            <button id="ver-pedido">Ver mi Pedido</button>
+            <button id="finalizar-pedido">Finalizar Pedido</button>
+        </div>
+    </div>
+    
+    <div id="pedido-page" class="container">
+        <header>
+            <img src="https://i.imgur.com/gK2e3p7.png" alt="Logo Manjar" class="logo-img">
+            <h1>Resumen de tu Pedido</h1>
+            <p>Confirma tus productos antes de finalizar la compra.</p>
+        </header>
+        <h2>Productos Seleccionados:</h2>
+        <ul id="pedido-list">
+            </ul>
+        <div id="total-pedido"></div>
+        <div class="checkout-buttons">
+            <button id="volver-menu">Volver al Menú</button>
+            <button id="confirmar-whatsapp">Enviar a WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos de los productos
+        const productos = [
+            { id: 1, nombre: 'Ensalada de Frutas', descripcion: 'Una mezcla fresca de frutas de temporada picadas.', imagen: 'https://images.unsplash.com/photo-1546069901-d5792d4f29a0?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 15000, mediano: 17000, grande: 22000 } },
+            { id: 2, nombre: 'Banana Split', descripcion: 'Delicioso helado con banana, crema y chocolate.', imagen: 'https://images.unsplash.com/photo-1579954151746-86c8f94d9b4b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 15000, mediano: 17000, grande: 22000 } },
+            { id: 3, nombre: 'Bomba Submarina', descripcion: 'Un plato exótico con camarones y ostras frescas.', imagen: 'https://images.unsplash.com/photo-1589178996639-652a2253018e?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 25000, mediano: 30000, grande: 35000 } },
+            { id: 4, nombre: 'Coctel de Ostras', descripcion: 'Ostras frescas con salsa especial para un sabor único.', imagen: 'https://images.unsplash.com/photo-1579237243912-32b70468e82a?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 25000, mediano: 30000, grande: 35000 } },
+            { id: 5, nombre: 'Copa de Helado', descripcion: 'Cremoso helado de vainilla, fresa y chocolate en una copa.', imagen: 'https://images.unsplash.com/photo-1502424911041-9878b2098670?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { unico: 12000 } },
+            { id: 6, nombre: 'Ceviche de Camarones', descripcion: 'Camarones marinados en limón, cebolla y especias.', imagen: 'https://images.unsplash.com/photo-1605374465492-f2105156a096?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 25000, mediano: 30000, grande: 35000 } },
+            { id: 7, nombre: 'Fresas con Crema', descripcion: 'Fresas frescas y maduras con una deliciosa crema batida.', imagen: 'https://images.unsplash.com/photo-1582294157989-21b84f391e4f?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 12000, mediano: 13000, grande: 15000 } },
+            { id: 8, nombre: 'Brownie con Helado', descripcion: 'Brownie de chocolate caliente con una bola de helado.', imagen: 'https://images.unsplash.com/photo-1579237243912-32b70468e82a?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { unico: 15000 } },
+            { id: 9, nombre: 'Berraquillo', descripcion: 'Una bebida energizante y refrescante con frutas y energizantes.', imagen: 'https://images.unsplash.com/photo-1546253457-3f9f743f55d5?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { pequeño: 25000, mediano: 30000, grande: 35000 } },
+            { id: 10, nombre: 'Jugos Naturales', descripcion: 'Jugos de frutas frescas exprimidas al momento.', imagen: 'https://images.unsplash.com/photo-1550982512-b203c907b275?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { agua: 6000, leche: 7000 } },
+            { id: 11, nombre: 'Malteadas', descripcion: 'Malteada cremosa de tus sabores favoritos.', imagen: 'https://images.unsplash.com/photo-1546253457-3f9f743f55d5?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', precios: { unico: 10000 } }
+        ];
+
+        let carrito = [];
+        let userInfo = {};
+
+        // Función para mostrar/ocultar páginas
+        function mostrarPagina(id) {
+            document.getElementById('registro-page').style.display = 'none';
+            document.getElementById('menu-page').style.display = 'none';
+            document.getElementById('pedido-page').style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+        }
+
+        // Manejo del formulario de registro
+        document.getElementById('formulario-registro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            userInfo = {
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                direccion: document.getElementById('direccion').value,
+                telefono: document.getElementById('telefono').value
+            };
+            if (userInfo.nombre && userInfo.email && userInfo.direccion && userInfo.telefono) {
+                mostrarPagina('menu-page');
+                renderizarMenu();
+            } else {
+                alert('Por favor, completa todos los campos del registro.');
+            }
+        });
+
+        // Renderiza el menú de productos
+        function renderizarMenu() {
+            const grid = document.querySelector('.product-grid');
+            grid.innerHTML = '';
+            productos.forEach(producto => {
+                const card = document.createElement('div');
+                card.classList.add('product-card');
+                
+                let optionsHtml = '';
+                const tieneTamanos = producto.precios.pequeño || producto.precios.mediano || producto.precios.grande;
+                const tieneBases = producto.precios.agua || producto.precios.leche;
+
+                if (tieneTamanos) {
+                    optionsHtml = `
+                        <select class="product-size" data-product-id="${producto.id}">
+                            <option value="pequeño">Pequeño - $${producto.precios.pequeño.toLocaleString('es-CO')}</option>
+                            <option value="mediano">Mediano - $${producto.precios.mediano.toLocaleString('es-CO')}</option>
+                            <option value="grande">Grande - $${producto.precios.grande.toLocaleString('es-CO')}</option>
+                        </select>
+                    `;
+                } else if (tieneBases) {
+                    optionsHtml = `
+                        <select class="product-size" data-product-id="${producto.id}">
+                            <option value="agua">En Agua - $${producto.precios.agua.toLocaleString('es-CO')}</option>
+                            <option value="leche">En Leche - $${producto.precios.leche.toLocaleString('es-CO')}</option>
+                        </select>
+                    `;
+                } else {
+                    optionsHtml = `<p class="price">$${producto.precios.unico.toLocaleString('es-CO')}</p>`;
+                }
+                
+                card.innerHTML = `
+                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                    <div class="product-info">
+                        <h3>${producto.nombre}</h3>
+                        <p>${producto.descripcion}</p>
+                        <div class="product-options">
+                            ${optionsHtml}
+                            <button class="add-to-cart" data-product-id="${producto.id}">Agregar al Pedido</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            agregarEventosCarrito();
+        }
+
+        // Agrega eventos a los botones de "Agregar al Pedido"
+        function agregarEventosCarrito() {
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.dataset.productId);
+                    const producto = productos.find(p => p.id === productId);
+                    const select = e.target.closest('.product-card').querySelector('select');
+                    let size = 'unico';
+                    let price = producto.precios.unico;
+
+                    if (select) {
+                        size = select.value;
+                        price = producto.precios[size];
+                    }
+
+                    const itemExistente = carrito.find(item => item.id === productId && item.size === size);
+                    if (itemExistente) {
+                        itemExistente.cantidad++;
+                    } else {
+                        carrito.push({ id: productId, nombre: producto.nombre, size, precio: price, cantidad: 1 });
+                    }
+
+                    alert(`¡${producto.nombre} agregado al carrito!`);
+                });
+            });
+        }
+        
+        // Renderiza el resumen del pedido
+        function renderizarPedido() {
+            const list = document.getElementById('pedido-list');
+            list.innerHTML = '';
+            let total = 0;
+
+            if (carrito.length === 0) {
+                list.innerHTML = '<li>Tu carrito está vacío.</li>';
+                document.getElementById('total-pedido').textContent = 'Total: $0';
+                return;
+            }
+
+            carrito.forEach(item => {
+                const li = document.createElement('li');
+                const sizeText = item.size !== 'unico' ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
+                const itemTotal = item.precio * item.cantidad;
+                li.innerHTML = `
+                    <span>${item.nombre}${sizeText} x ${item.cantidad}</span>
+                    <span>$${itemTotal.toLocaleString('es-CO')}</span>
+                `;
+                list.appendChild(li);
+                total += itemTotal;
+            });
+            document.getElementById('total-pedido').textContent = `Total: $${total.toLocaleString('es-CO')}`;
+        }
+        
+        // Manejo de botones de navegación
+        document.getElementById('ver-pedido').addEventListener('click', () => {
+            renderizarPedido();
+            mostrarPagina('pedido-page');
+        });
+        
+        document.getElementById('volver-menu').addEventListener('click', () => {
+            mostrarPagina('menu-page');
+        });
+        
+        document.getElementById('finalizar-pedido').addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert('Tu carrito está vacío. Añade productos antes de finalizar.');
+            } else {
+                renderizarPedido();
+                mostrarPagina('pedido-page');
+            }
+        });
+
+        document.getElementById('confirmar-whatsapp').addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert('No tienes productos en tu carrito. Por favor, añade algo antes de confirmar.');
+                return;
+            }
+            
+            let mensaje = '¡Hola! Me gustaría hacer un pedido:\n\n';
+            mensaje += '--- DATOS DEL CLIENTE ---\n';
+            mensaje += `*Nombre:* ${userInfo.nombre}\n`;
+            mensaje += `*Email:* ${userInfo.email}\n`;
+            mensaje += `*Dirección:* ${userInfo.direccion}\n`;
+            mensaje += `*Teléfono:* ${userInfo.telefono}\n\n`;
+            
+            mensaje += '--- RESUMEN DEL PEDIDO ---\n';
+            let total = 0;
+            carrito.forEach(item => {
+                const sizeText = item.size !== 'unico' ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
+                const itemTotal = item.precio * item.cantidad;
+                mensaje += `- ${item.nombre}${sizeText} x ${item.cantidad} = *$${itemTotal.toLocaleString('es-CO')}*\n`;
+                total += itemTotal;
+            });
+            mensaje += `\n*Total a Pagar: $${total.toLocaleString('es-CO')}*`;
+
+            const numeroWhatsApp = '3227218700'; // Tu número de WhatsApp
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(url, '_blank');
+            
+            carrito = [];
+            userInfo = {};
+            mostrarPagina('registro-page');
+            alert('¡Tu pedido ha sido enviado a WhatsApp! Te redirigiremos a la página de inicio.');
+        });
+    </script>
+</body>
+</html>
